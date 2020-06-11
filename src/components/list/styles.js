@@ -29,7 +29,8 @@ export const TaskList = styled.ul`
 export const TaskListItem = styled.li`
   width: 200px;
   height: 150px;
-  background: #d63031;
+  background: ${(props) =>
+    props.typeStick !== "task" ? "#d63031" : "#00b894"};
   margin-bottom: 15px;
   padding: 10px 20px;
   box-shadow: 8px 8px 7px -5px rgba(0, 0, 0, 0.55);

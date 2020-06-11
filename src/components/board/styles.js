@@ -6,6 +6,7 @@ export const Container = styled.div`
   height: 100vh;
   background: #f7f7f7;
   flex-direction: column;
+  overflow-x: hidden;
 `;
 
 export const TitleBoard = styled.h1`

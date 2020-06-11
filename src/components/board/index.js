@@ -13,6 +13,11 @@ export default function Board() {
         <List titleList="Deploy" />
         <List titleList="Done" />
       </BodyBoard>
+      <div>
+        <input type="text" />
+        <button> Task </button>
+        <button> Feature </button>
+      </div>
     </Container>
   );
 }
