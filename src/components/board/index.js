@@ -17,7 +17,6 @@ export default function Board() {
       title: "Task 1",
       desc:
         "Descrição da tarefa com texto bem grande para ver a quebra de texto.",
-      draggable: true,
     },
     {
       id: 2,
@@ -25,7 +24,6 @@ export default function Board() {
       title: "Task 2",
       desc:
         "Descrição da tarefa com texto bem grande para ver a quebra de texto.",
-      draggable: false,
     },
   ];
 
@@ -36,9 +34,37 @@ export default function Board() {
   const [deploy, setDeploy] = useState([]);
   const [done, setDone] = useState([]);
 
+  const [title, setTitle] = useState();
+  const [desc, setDesc] = useState();
+
   useEffect(() => {
     setToDo([...data]);
   }, []);
+
+  const makeId = (length) => {
+    let result = "";
+    let characters =
+      "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+    let charactersLength = characters.length;
+    for (let i = 0; i < length; i++) {
+      result += characters.charAt(Math.floor(Math.random() * charactersLength));
+    }
+    return result;
+  };
+
+  const addStick = (type) => {
+    let id = makeId(5);
+
+    let data = {
+      id,
+      type,
+      title,
+      desc,
+    };
+    toDo.push(data);
+    setTitle("");
+    setDesc("");
+  };
 
   return (
     <Container>
@@ -52,10 +78,34 @@ export default function Board() {
         <List titleList="Done" data={done} />
       </BodyBoard>
       <ContainerInput>
-        <InputStick placeholder="Add Title Stick" />
-        <InputStick placeholder="Add Description Stick" />
-        <BtAddTask> Task </BtAddTask>
-        <BtAddFeature> Feature </BtAddFeature>
+        <InputStick
+          placeholder="Add Title Stick"
+          value={title}
+          onChange={(text) => {
+            setTitle(text.target.value);
+          }}
+        />
+        <InputStick
+          placeholder="Add Description Stick"
+          value={desc}
+          onChange={(text) => {
+            setDesc(text.target.value);
+          }}
+        />
+        <BtAddTask
+          onClick={() => {
+            addStick("task");
+          }}
+        >
+          Task
+        </BtAddTask>
+        <BtAddFeature
+          onClick={() => {
+            addStick("feature");
+          }}
+        >
+          Feature
+        </BtAddFeature>
       </ContainerInput>
     </Container>
   );

@@ -57,8 +57,8 @@ export const BtAddTask = styled.button`
   align-items: center;
   margin-right: 10px;
   font-size: 14px;
-  background: #2ecc71;
-  color: #eee;
+  background: #f1c40f;
+  color: #2d3436;
 `;
 
 export const BtAddFeature = styled.button`
@@ -71,6 +71,6 @@ export const BtAddFeature = styled.button`
   align-items: center;
   margin-right: 10px;
   font-size: 14px;
-  background: #f1c40f;
-  color: #2d3436;
+  background: #2ecc71;
+  color: #eee;
 `;

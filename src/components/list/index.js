@@ -14,11 +14,7 @@ export default function List({ titleList, typeStick, data }) {
       <TaskList>
         {sticks &&
           sticks.map((stick) => (
-            <TaskListItem
-              draggable={stick.draggable}
-              typeStick={stick.type}
-              key={stick.id}
-            >
+            <TaskListItem draggable typeStick={stick.type} key={stick.id}>
               <h2>{stick.title}</h2>
               <p>{stick.desc}</p>
             </TaskListItem>
