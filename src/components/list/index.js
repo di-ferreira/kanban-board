@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Container, TitleList, TaskList, TaskListItem } from "./styles";
 
-export default function List({ titleList, typeStick, data }) {
+export default function List({ titleList, typeStick, data, onDrag }) {
   const [sticks, setSticks] = useState([]);
 
   useEffect(() => {
@@ -14,7 +14,12 @@ export default function List({ titleList, typeStick, data }) {
       <TaskList>
         {sticks &&
           sticks.map((stick) => (
-            <TaskListItem draggable typeStick={stick.type} key={stick.id}>
+            <TaskListItem
+              draggable
+              typeStick={stick.type}
+              key={stick.id}
+              onDrag={() => onDrag(stick)}
+            >
               <h2>{stick.title}</h2>
               <p>{stick.desc}</p>
             </TaskListItem>

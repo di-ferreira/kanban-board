@@ -61,17 +61,43 @@ export default function Board() {
       title,
       desc,
     };
-    toDo.push(data);
+
+    setToDo([...toDo, data]);
+
     setTitle("");
     setDesc("");
+  };
+
+  const onDrop = (titleList) => {
+    console.log(titleList);
+  };
+
+  const onDrag = (stick) => {
+    //console.log(stick);
   };
 
   return (
     <Container>
       <TitleBoard> Kanban Board </TitleBoard>
       <BodyBoard>
-        <List titleList="To Do" data={toDo} />
-        <List titleList="Plan" data={plan} />
+        <List
+          titleList="To Do"
+          data={toDo}
+          onDrag={(stick) => {
+            onDrag(stick);
+          }}
+          onDrop={(titleList) => {
+            onDrop(titleList);
+          }}
+        />
+        <List
+          titleList="Plan"
+          data={plan}
+          onDrop={(titleList) => {
+            onDrop(titleList);
+          }}
+          ondragover={(e) => e.preventDefault()}
+        />
         <List titleList="Develop" data={development} />
         <List titleList="Test" data={test} />
         <List titleList="Deploy" data={deploy} />
