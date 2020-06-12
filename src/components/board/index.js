@@ -35,6 +35,7 @@ export default function Board() {
   const [test, setTest] = useState([]);
   const [deploy, setDeploy] = useState([]);
   const [done, setDone] = useState([]);
+  const [draggedStick, setDraggedStick] = useState();
 
   const [title, setTitle] = useState();
   const [desc, setDesc] = useState();
@@ -43,6 +44,7 @@ export default function Board() {
     setToDo([...data]);
   }, []);
 
+  //- create a id
   const makeId = (length) => {
     let result = "";
     let characters =
@@ -54,6 +56,7 @@ export default function Board() {
     return result;
   };
 
+  //- add stick
   const addStick = (type) => {
     let id = makeId(5);
 
@@ -70,13 +73,51 @@ export default function Board() {
     setDesc("");
   };
 
-  const onDrop = (event) => {
-    event.preventDefault();
-    console.log("Drop");
+  //- removeStick
+
+  const removeStick = (dataList, stick) => {
+    switch (dataList) {
+      case "ToDo":
+        setToDo(toDo.filter((stickList) => stickList.id !== stick.id));
+        break;
+
+      case "Plan":
+        setPlan(plan.filter((stickList) => stickList.id !== stick.id));
+        break;
+
+      case "Development":
+        setDevelopment(
+          development.filter((stickList) => stickList.id !== stick.id)
+        );
+        break;
+
+      case "Test":
+        setTest(test.filter((stickList) => stickList.id !== stick.id));
+        break;
+
+      case "Deploy":
+        setDeploy(deploy.filter((stickList) => stickList.id !== stick.id));
+        break;
+
+      case "Done":
+        setDone(done.filter((stickList) => stickList.id !== stick.id));
+        break;
+
+      default:
+        break;
+    }
   };
 
-  const onDrag = (stick) => {
-    // console.log(stick);
+  //- Drop event
+  const onDrop = (event) => {
+    event.preventDefault();
+    let dataList = event.target.getAttribute("data-list");
+  };
+
+  //- Drag event
+  const onDrag = (dataList, stick) => {
+    setDraggedStick(stick);
+    removeStick(dataList, stick);
   };
 
   return (
@@ -86,22 +127,70 @@ export default function Board() {
         <List
           titleList="To Do"
           data={toDo}
-          onDrag={(stick) => {
-            onDrag(stick);
+          dataList={"ToDo"}
+          onDrag={(dataList, stick) => {
+            onDrag(dataList, stick);
+          }}
+          onDrop={(e) => {
+            onDrop(e);
           }}
         />
 
         <List
           titleList="Plan"
           data={plan}
+          dataList={"Plan"}
+          onDrag={(dataList, stick) => {
+            onDrag(dataList, stick);
+          }}
           onDrop={(e) => {
             onDrop(e);
           }}
         />
-        <List titleList="Develop" data={development} />
-        <List titleList="Test" data={test} />
-        <List titleList="Deploy" data={deploy} />
-        <List titleList="Done" data={done} />
+        <List
+          titleList="Develop"
+          data={development}
+          dataList={"Development"}
+          onDrag={(dataList, stick) => {
+            onDrag(dataList, stick);
+          }}
+          onDrop={(e) => {
+            onDrop(e);
+          }}
+        />
+        <List
+          titleList="Test"
+          data={test}
+          dataList={"Test"}
+          onDrag={(dataList, stick) => {
+            onDrag(dataList, stick);
+          }}
+          onDrop={(e) => {
+            onDrop(e);
+          }}
+        />
+        <List
+          titleList="Deploy"
+          data={deploy}
+          dataList={"Deploy"}
+          onDrag={(dataList, stick) => {
+            onDrag(dataList, stick);
+          }}
+          onDrop={(e) => {
+            onDrop(e);
+          }}
+        />
+        <List
+          titleList="Done"
+          data={done}
+          dataList={"Done"}
+          onDrag={(dataList, stick) => {
+            onDrag(dataList, stick);
+          }}
+          onDrop={(e) => {
+            onDrop(e);
+          }}
+        />
       </BodyBoard>
       <ContainerInput>
         <InputStick

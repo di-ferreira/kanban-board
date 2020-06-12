@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Container, TitleList, TaskList, TaskListItem } from "./styles";
 
-export default function List({ titleList, typeStick, data, onDrag, onDrop }) {
+export default function List({
+  titleList,
+  typeStick,
+  data,
+  dataList,
+  onDrag,
+  onDrop,
+}) {
   const [sticks, setSticks] = useState([]);
 
   useEffect(() => {
@@ -10,7 +17,6 @@ export default function List({ titleList, typeStick, data, onDrag, onDrop }) {
 
   const onDragOver = (event) => {
     event.preventDefault();
-    console.log("Nao sei o que");
   };
 
   return (
@@ -23,6 +29,7 @@ export default function List({ titleList, typeStick, data, onDrag, onDrop }) {
         onDragOver={(e) => {
           onDragOver(e);
         }}
+        data-list={dataList}
       >
         {sticks &&
           sticks.map((stick) => (
@@ -30,7 +37,7 @@ export default function List({ titleList, typeStick, data, onDrag, onDrop }) {
               draggable
               typeStick={stick.type}
               key={stick.id}
-              onDragStart={() => onDrag(stick)}
+              onDragStart={() => onDrag(dataList, stick)}
             >
               <h2>{stick.title}</h2>
               <p>{stick.desc}</p>

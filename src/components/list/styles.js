@@ -26,7 +26,6 @@ export const TaskList = styled.ul`
   padding-left: 30px;
   min-width: 200px;
   min-height: 500px;
-  background: red;
 `;
 
 export const TaskListItem = styled.li`
