@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Container,
   TitleBoard,
@@ -12,22 +12,22 @@ import {
 import List from "../List";
 
 export default function Board() {
-  const data = [
-    {
-      id: 1,
-      type: "task",
-      title: "Task 1",
-      desc:
-        "Descrição da tarefa com texto bem grande para ver a quebra de texto.",
-    },
-    {
-      id: 2,
-      type: "feature",
-      title: "Task 2",
-      desc:
-        "Descrição da tarefa com texto bem grande para ver a quebra de texto.",
-    },
-  ];
+  // const data = [
+  //   {
+  //     id: 1,
+  //     type: "task",
+  //     title: "Task 1",
+  //     desc:
+  //       "Descrição da tarefa com texto bem grande para ver a quebra de texto.",
+  //   },
+  //   {
+  //     id: 2,
+  //     type: "feature",
+  //     title: "Task 2",
+  //     desc:
+  //       "Descrição da tarefa com texto bem grande para ver a quebra de texto.",
+  //   },
+  // ];
 
   const [toDo, setToDo] = useState([]);
   const [plan, setPlan] = useState([]);
@@ -40,9 +40,9 @@ export default function Board() {
   const [title, setTitle] = useState();
   const [desc, setDesc] = useState();
 
-  useEffect(() => {
-    setToDo([...data]);
-  }, []);
+  // useEffect(() => {
+  //   setToDo([...data]);
+  // }, []);
 
   //- create a id
   const makeId = (length) => {
@@ -73,9 +73,9 @@ export default function Board() {
     setDesc("");
   };
 
-  //- removeStick
+  //- removeStickList
 
-  const removeStick = (dataList, stick) => {
+  const removeStickList = (dataList, stick) => {
     switch (dataList) {
       case "ToDo":
         setToDo(toDo.filter((stickList) => stickList.id !== stick.id));
@@ -108,16 +108,48 @@ export default function Board() {
     }
   };
 
+  const addStickList = (dataList, stick) => {
+    switch (dataList) {
+      case "ToDo":
+        setToDo([...toDo, stick]);
+        break;
+
+      case "Plan":
+        setPlan([...plan, stick]);
+        break;
+
+      case "Development":
+        setDevelopment([...development, stick]);
+        break;
+
+      case "Test":
+        setTest([...test, stick]);
+        break;
+
+      case "Deploy":
+        setDeploy([...deploy, stick]);
+        break;
+
+      case "Done":
+        setDone([...done, stick]);
+        break;
+
+      default:
+        break;
+    }
+  };
+
   //- Drop event
   const onDrop = (event) => {
     event.preventDefault();
     let dataList = event.target.getAttribute("data-list");
+    addStickList(dataList, draggedStick);
   };
 
   //- Drag event
   const onDrag = (dataList, stick) => {
     setDraggedStick(stick);
-    removeStick(dataList, stick);
+    removeStickList(dataList, stick);
   };
 
   return (
