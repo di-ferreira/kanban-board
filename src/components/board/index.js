@@ -8,7 +8,9 @@ import {
   BtAddTask,
   BtAddFeature,
 } from "./styles";
+
 import List from "../List";
+
 export default function Board() {
   const data = [
     {
@@ -68,12 +70,13 @@ export default function Board() {
     setDesc("");
   };
 
-  const onDrop = (titleList) => {
-    console.log(titleList);
+  const onDrop = (event) => {
+    event.preventDefault();
+    console.log("Drop");
   };
 
   const onDrag = (stick) => {
-    //console.log(stick);
+    // console.log(stick);
   };
 
   return (
@@ -86,17 +89,14 @@ export default function Board() {
           onDrag={(stick) => {
             onDrag(stick);
           }}
-          onDrop={(titleList) => {
-            onDrop(titleList);
-          }}
         />
+
         <List
           titleList="Plan"
           data={plan}
-          onDrop={(titleList) => {
-            onDrop(titleList);
+          onDrop={(e) => {
+            onDrop(e);
           }}
-          ondragover={(e) => e.preventDefault()}
         />
         <List titleList="Develop" data={development} />
         <List titleList="Test" data={test} />
