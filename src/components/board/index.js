@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Container,
   TitleBoard,
@@ -12,23 +12,7 @@ import {
 import List from "../List";
 
 export default function Board() {
-  // const data = [
-  //   {
-  //     id: 1,
-  //     type: "task",
-  //     title: "Task 1",
-  //     desc:
-  //       "Descrição da tarefa com texto bem grande para ver a quebra de texto.",
-  //   },
-  //   {
-  //     id: 2,
-  //     type: "feature",
-  //     title: "Task 2",
-  //     desc:
-  //       "Descrição da tarefa com texto bem grande para ver a quebra de texto.",
-  //   },
-  // ];
-
+  const [board, setBoard] = useState([]);
   const [toDo, setToDo] = useState([]);
   const [plan, setPlan] = useState([]);
   const [development, setDevelopment] = useState([]);
@@ -40,9 +24,35 @@ export default function Board() {
   const [title, setTitle] = useState();
   const [desc, setDesc] = useState();
 
-  // useEffect(() => {
-  //   setToDo([...data]);
-  // }, []);
+  //- inicia o carregamento dos dados
+  useEffect(() => {
+    let data = localStorage.getItem("@kanban/board");
+
+    if (data || data !== null) {
+      setBoard(data);
+    }
+    loadList(board);
+  }, []);
+
+  useEffect(() => {
+    //- salva em localStorage
+    localStorage.setItem("@kanban/board", board);
+  }, [board]);
+
+  const saveBoard = () => {
+    setBoard([toDo, plan, development, test, deploy, done]);
+  };
+
+  const loadList = (board) => {
+    if (board) {
+      setToDo(board.toDo);
+      setPlan(board.plan);
+      setDevelopment(board.development);
+      setTest(board.test);
+      setDeploy(board.deploy);
+      setDone(board.done);
+    }
+  };
 
   //- create a id
   const makeId = (length) => {
@@ -74,7 +84,6 @@ export default function Board() {
   };
 
   //- removeStickList
-
   const removeStickList = (dataList, stick) => {
     switch (dataList) {
       case "ToDo":
@@ -108,6 +117,7 @@ export default function Board() {
     }
   };
 
+  //- addStick
   const addStickList = (dataList, stick) => {
     switch (dataList) {
       case "ToDo":
@@ -144,6 +154,7 @@ export default function Board() {
     event.preventDefault();
     let dataList = event.target.getAttribute("data-list");
     addStickList(dataList, draggedStick);
+    saveBoard();
   };
 
   //- Drag event
