@@ -31,7 +31,7 @@ export default function Board() {
     if (data || data !== null) {
       setBoard(data);
     }
-    loadList(board);
+    loadList(data);
   }, []);
 
   useEffect(() => {
@@ -77,39 +77,57 @@ export default function Board() {
       desc,
     };
 
-    setToDo([...toDo, data]);
+    if (toDo) {
+      setToDo([...toDo, data]);
+    } else {
+      setToDo([data]);
+    }
 
     setTitle("");
     setDesc("");
   };
 
-  //- removeStickList
-  const removeStickList = (dataList, stick) => {
+  //- if remove true remove stick of actual list
+  //- if remove false add stick of new list
+  const chooseList = (list, setList, stick, remove = true) => {
+    console.log(list);
+    if (remove) {
+      let newList = list.filter((l) => l.id !== stick.id);
+      setList(newList);
+    } else {
+      if (list === undefined || list === null) {
+        setList([stick]);
+      } else {
+        setList([...list, stick]);
+      }
+    }
+  };
+
+  //- add stick of list
+  const addStickList = (dataList, stick) => {
     switch (dataList) {
       case "ToDo":
-        setToDo(toDo.filter((stickList) => stickList.id !== stick.id));
+        chooseList(toDo, setToDo, stick, false);
         break;
 
       case "Plan":
-        setPlan(plan.filter((stickList) => stickList.id !== stick.id));
+        chooseList(plan, setPlan, stick, false);
         break;
 
       case "Development":
-        setDevelopment(
-          development.filter((stickList) => stickList.id !== stick.id)
-        );
+        chooseList(development, setDevelopment, stick, false);
         break;
 
       case "Test":
-        setTest(test.filter((stickList) => stickList.id !== stick.id));
+        chooseList(test, setTest, stick, false);
         break;
 
       case "Deploy":
-        setDeploy(deploy.filter((stickList) => stickList.id !== stick.id));
+        chooseList(deploy, setDeploy, stick, false);
         break;
 
       case "Done":
-        setDone(done.filter((stickList) => stickList.id !== stick.id));
+        chooseList(done, setDone, stick, false);
         break;
 
       default:
@@ -117,31 +135,31 @@ export default function Board() {
     }
   };
 
-  //- addStick
-  const addStickList = (dataList, stick) => {
+  //- remove stick of list
+  const removeStickList = (dataList, stick) => {
     switch (dataList) {
       case "ToDo":
-        setToDo([...toDo, stick]);
+        chooseList(toDo, setToDo, stick);
         break;
 
       case "Plan":
-        setPlan([...plan, stick]);
+        chooseList(plan, setPlan, stick);
         break;
 
       case "Development":
-        setDevelopment([...development, stick]);
+        chooseList(development, setDevelopment, stick);
         break;
 
       case "Test":
-        setTest([...test, stick]);
+        chooseList(test, setTest, stick);
         break;
 
       case "Deploy":
-        setDeploy([...deploy, stick]);
+        chooseList(deploy, setDeploy, stick);
         break;
 
       case "Done":
-        setDone([...done, stick]);
+        chooseList(done, setDone, stick);
         break;
 
       default:
@@ -155,6 +173,7 @@ export default function Board() {
     let dataList = event.target.getAttribute("data-list");
     addStickList(dataList, draggedStick);
     saveBoard();
+    setDraggedStick("");
   };
 
   //- Drag event
