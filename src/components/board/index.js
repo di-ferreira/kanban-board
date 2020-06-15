@@ -12,39 +12,48 @@ import {
 import List from "../List";
 
 export default function Board() {
-  const [board, setBoard] = useState([]);
   const [toDo, setToDo] = useState([]);
   const [plan, setPlan] = useState([]);
   const [development, setDevelopment] = useState([]);
   const [test, setTest] = useState([]);
   const [deploy, setDeploy] = useState([]);
   const [done, setDone] = useState([]);
+  const [board, setBoard] = useState({
+    toDo,
+    plan,
+    development,
+    test,
+    deploy,
+    done,
+  });
   const [draggedStick, setDraggedStick] = useState();
 
-  const [title, setTitle] = useState();
-  const [desc, setDesc] = useState();
+  const [title, setTitle] = useState("");
+  const [desc, setDesc] = useState("");
 
   //- inicia o carregamento dos dados
   useEffect(() => {
-    let data = localStorage.getItem("@kanban/board");
+    let data = localStorage.getItem("board");
 
     if (data || data !== null) {
-      setBoard(data);
+      var parsingData = JSON.parse(data);
+      setBoard(parsingData);
     }
-    loadList(data);
+    loadList(parsingData);
   }, []);
 
   useEffect(() => {
     //- salva em localStorage
-    localStorage.setItem("@kanban/board", board);
+    localStorage.setItem("board", JSON.stringify(board));
   }, [board]);
 
   const saveBoard = () => {
-    setBoard([toDo, plan, development, test, deploy, done]);
+    let data = { toDo, plan, development, test, deploy, done };
+    setBoard(data);
   };
 
   const loadList = (board) => {
-    if (board) {
+    if (board !== undefined && board !== null) {
       setToDo(board.toDo);
       setPlan(board.plan);
       setDevelopment(board.development);
@@ -76,31 +85,23 @@ export default function Board() {
       title,
       desc,
     };
-
-    if (toDo) {
-      setToDo([...toDo, data]);
-    } else {
-      setToDo([data]);
-    }
+    toDo.push(data);
 
     setTitle("");
     setDesc("");
+    saveBoard();
   };
 
   //- if remove true remove stick of actual list
   //- if remove false add stick of new list
   const chooseList = (list, setList, stick, remove = true) => {
-    console.log(list);
     if (remove) {
       let newList = list.filter((l) => l.id !== stick.id);
       setList(newList);
     } else {
-      if (list === undefined || list === null) {
-        setList([stick]);
-      } else {
-        setList([...list, stick]);
-      }
+      list.push(stick);
     }
+    saveBoard();
   };
 
   //- add stick of list
@@ -172,7 +173,6 @@ export default function Board() {
     event.preventDefault();
     let dataList = event.target.getAttribute("data-list");
     addStickList(dataList, draggedStick);
-    saveBoard();
     setDraggedStick("");
   };
 
